@@ -123,6 +123,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Profile.cpp" />
+    <ClCompile Include="ProfilesContainer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\rapidxml-1.13\rapidxml.hpp" />
+    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_iterators.hpp" />
+    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_print.hpp" />
+    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_utils.hpp" />
+    <ClInclude Include="Profile.h" />
+    <ClInclude Include="ProfilesContainer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="save.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
