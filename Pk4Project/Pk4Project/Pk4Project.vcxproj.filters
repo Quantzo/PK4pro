@@ -16,6 +16,21 @@
     <Filter Include="Pliki nagłówkowe\rapidxml">
       <UniqueIdentifier>{ed87526a-ec4f-46dd-be6c-86046b28150c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki nagłówkowe\profile">
+      <UniqueIdentifier>{6048fffe-14b6-48bb-8903-09f622a7cdb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Objects">
+      <UniqueIdentifier>{65ea32e9-ba03-4294-922f-04382a0d7aad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Objects\Tools">
+      <UniqueIdentifier>{2f0ded42-7d39-4748-81ff-b8a5d5f0ee25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Objects\Terrain">
+      <UniqueIdentifier>{06d319aa-9d85-4ccf-998f-b374d8473751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki nagłówkowe\Engine">
+      <UniqueIdentifier>{31f22163-d48b-4cf5-87d2-ca5dd71d7554}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,23 +44,62 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Profile.h">
-      <Filter>Pliki nagłówkowe</Filter>
+    <ClInclude Include="rapidxml_utils.hpp">
+      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml.hpp">
+      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml_iterators.hpp">
+      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    </ClInclude>
+    <ClInclude Include="rapidxml_print.hpp">
+      <Filter>Pliki nagłówkowe\rapidxml</Filter>
     </ClInclude>
     <ClInclude Include="ProfilesContainer.h">
-      <Filter>Pliki nagłówkowe</Filter>
+      <Filter>Pliki nagłówkowe\profile</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rapidxml-1.13\rapidxml.hpp">
-      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    <ClInclude Include="Profile.h">
+      <Filter>Pliki nagłówkowe\profile</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_iterators.hpp">
-      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    <ClInclude Include="Object.h">
+      <Filter>Pliki nagłówkowe\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_print.hpp">
-      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    <ClInclude Include="Tool.h">
+      <Filter>Pliki nagłówkowe\Objects\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\rapidxml-1.13\rapidxml_utils.hpp">
-      <Filter>Pliki nagłówkowe\rapidxml</Filter>
+    <ClInclude Include="Pickaxe.h">
+      <Filter>Pliki nagłówkowe\Objects\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="SuperPickaxe.h">
+      <Filter>Pliki nagłówkowe\Objects\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Pliki nagłówkowe\Objects\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Dynamite.h">
+      <Filter>Pliki nagłówkowe\Objects\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Clay.h">
+      <Filter>Pliki nagłówkowe\Objects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Granite.h">
+      <Filter>Pliki nagłówkowe\Objects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Pliki nagłówkowe\Objects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Blank.h">
+      <Filter>Pliki nagłówkowe\Objects\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Pliki nagłówkowe\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Pliki nagłówkowe\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Pliki nagłówkowe\Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

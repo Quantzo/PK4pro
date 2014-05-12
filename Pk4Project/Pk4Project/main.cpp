@@ -1,10 +1,14 @@
 #include <SFML/Graphics.hpp>
+#include "ProfilesContainer.h"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color::Green);
+	ProfilesContainer test("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\save2.txt");
+	test.Load();
+
 
 	while (window.isOpen())
 	{
