@@ -6,7 +6,7 @@ class Tool : public Object
 public:
 	Tool();
 	~Tool();
-	virtual void use();
+	virtual bool use(Object* oUsedOn);
 	void setRange(int iRange);
 	int getRange();
 	
@@ -16,8 +16,9 @@ private:
 };
 
 
-void Tool::use()
+bool Tool::use(Object* oUsedOn)
 {
+	return false;
 }
 
 void Tool::setRange(int iRange)
