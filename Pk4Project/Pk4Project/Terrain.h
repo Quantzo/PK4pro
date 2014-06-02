@@ -4,18 +4,10 @@
 class Terrain : public Object
 {
 public:
-	Terrain();
-	~Terrain();
+	Terrain(){};
+	~Terrain(){};
 
 private:
 
 };
-
-Terrain::Terrain()
-{
-}
-
-Terrain::~Terrain()
-{
-}
 #endif

@@ -88,6 +88,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\Quantzo\Source\Repos\ProjektPK4\SFML-2.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>NotSet</ShowProgress>
     </Link>
     <ProjectReference>
       <LinkLibraryDependencies>false</LinkLibraryDependencies>
@@ -122,9 +123,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="bomb.cpp" />
+    <ClCompile Include="Clay.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventQueue.cpp" />
+    <ClCompile Include="Granite.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Pickaxe.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="ProfilesContainer.cpp" />
+    <ClCompile Include="Blank.cpp" />
+    <ClCompile Include="Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Blank.h" />
@@ -132,6 +144,8 @@
     <ClInclude Include="Clay.h" />
     <ClInclude Include="Dynamite.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventQueue.h" />
     <ClInclude Include="Granite.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Pickaxe.h" />

@@ -31,16 +31,64 @@
     <Filter Include="Pliki nagłówkowe\Engine">
       <UniqueIdentifier>{31f22163-d48b-4cf5-87d2-ca5dd71d7554}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pliki źródłowe\profile">
+      <UniqueIdentifier>{41e7d3c9-e72b-4546-9ff4-112ba72df94d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Objects">
+      <UniqueIdentifier>{792bbb17-f9d4-4dac-95c2-7a9f39f1abdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Objects\Terrain">
+      <UniqueIdentifier>{b12741b8-4f84-4170-b3a5-f689242b800d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Objects\Tools">
+      <UniqueIdentifier>{1528815d-d613-45a8-80fc-66e401702825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pliki źródłowe\Engine">
+      <UniqueIdentifier>{f2e0114f-7ca0-4653-bb0d-75d0aa30482e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
     <ClCompile Include="Profile.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\profile</Filter>
     </ClCompile>
     <ClCompile Include="ProfilesContainer.cpp">
-      <Filter>Pliki źródłowe</Filter>
+      <Filter>Pliki źródłowe\profile</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Pliki źródłowe\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Blank.cpp">
+      <Filter>Pliki źródłowe\Objects\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Clay.cpp">
+      <Filter>Pliki źródłowe\Objects\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Granite.cpp">
+      <Filter>Pliki źródłowe\Objects\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="bomb.cpp">
+      <Filter>Pliki źródłowe\Objects\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool.cpp">
+      <Filter>Pliki źródłowe\Objects\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickaxe.cpp">
+      <Filter>Pliki źródłowe\Objects\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Pliki źródłowe\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Pliki źródłowe\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Pliki źródłowe\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="EventQueue.cpp">
+      <Filter>Pliki źródłowe\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Pliki nagłówkowe\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Pliki nagłówkowe\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="EventQueue.h">
+      <Filter>Pliki nagłówkowe\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

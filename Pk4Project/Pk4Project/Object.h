@@ -4,19 +4,10 @@
 class Object
 {
 public:
-	Object();
-	virtual ~Object();
+	Object(){};
+	virtual ~Object(){};
 	virtual void draw(int iXpos, int iYpos, sf::RenderWindow &window) = 0;
 private:
 
 };
-
-Object::Object()
-{
-}
-
-
-Object::~Object()
-{
-}
 #endif
