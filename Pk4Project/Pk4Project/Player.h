@@ -4,6 +4,8 @@
 #include "Object.h"
 #include "Tool.h"
 #include "Pickaxe.h"
+#include "SuperPickaxe.h"
+
 
 class Player : public Object
 {

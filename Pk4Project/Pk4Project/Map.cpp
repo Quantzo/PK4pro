@@ -1,4 +1,5 @@
 #include "Map.h"
+
 Map::Map()
 {
 	this->iXrange = 50;
@@ -63,7 +64,7 @@ void Map::generateMap()
 				int tmp = rand() % 3;
 				if (tmp == 0)
 				{
-					this->oMap[i][j] = new Granite();
+					this->oMap[i][j] = new Clay();
 				}
 				else if (tmp == 1)
 				{
@@ -71,7 +72,7 @@ void Map::generateMap()
 				}
 				else
 				{
-					this->oMap[i][j] = new Blank();
+					this->oMap[i][j] = new Clay();
 				}
 			}
 
@@ -191,7 +192,7 @@ void Map::useCurrentTool(int iXPosition, int iYPosition)
 	}
 	else if (this->pPlayer->getToolIndex() == 2)//superpickaxe
 	{
-		//this->useSuperPickaxe(iXPosition, iYPosition);
+		this->useSuperPickaxe(iXPosition, iYPosition);
 	}
 	else if (this->pPlayer->getToolIndex() == 3)//bomb
 	{
@@ -199,12 +200,17 @@ void Map::useCurrentTool(int iXPosition, int iYPosition)
 	}
 	else if (this->pPlayer->getToolIndex() == 4)//dynamite
 	{
-		//this->useDynamite(iXPosition, iYPosition);
+		this->useDynamite(iXPosition, iYPosition);
 	}
 }
 
 
 void Map::usePickaxe(int iXPosition, int iYPosition)
+{
+	delete this->oMap[iXPosition][iYPosition];
+	this->oMap[iXPosition][iYPosition] = new Blank();
+}
+void Map::useSuperPickaxe(int iXPosition, int iYPosition)
 {
 	delete this->oMap[iXPosition][iYPosition];
 	this->oMap[iXPosition][iYPosition] = new Blank();
@@ -215,6 +221,14 @@ void Map::useBomb(int iXPosition, int iYPosition)
 	Bomb* tmp = new Bomb(3);
 	this->oMap[iXPosition][iYPosition] = tmp;
 	std::thread thread(&Bomb::setUp, tmp, this->qEventQueue,iXPosition,iYPosition);
+	thread.detach();
+}
+void Map::useDynamite(int iXPosition, int iYPosition)
+{
+	delete this->oMap[iXPosition][iYPosition];
+	Dynamite* tmp = new Dynamite(5);
+	this->oMap[iXPosition][iYPosition] = tmp;
+	std::thread thread(&Dynamite::setUp, tmp, this->qEventQueue, iXPosition, iYPosition);
 	thread.detach();
 }
 
@@ -338,6 +352,229 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 			this->oMap[iXPosition + 1][iYPosition - 1] = new Blank();
 		}
 	}
+	delete this->oMap[iXPosition][iYPosition];
+	this->oMap[iXPosition][iYPosition] = new Blank();
+}
+
+void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
+{
+	bool bLeft = false;
+	bool bRight = false;
+	bool bUp = false;
+	bool bDown = false;
+
+	if (iXPosition - 1 >= 0)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition]))
+		{
+			delete this->oMap[iXPosition - 1][iYPosition];
+			this->oMap[iXPosition - 1][iYPosition] = new Blank();
+		}
+		bLeft = true;
+	}
+	if (iXPosition + 1 < iXrange)
+	{
+		bRight = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition]))
+		{
+			delete this->oMap[iXPosition + 1][iYPosition];
+			this->oMap[iXPosition + 1][iYPosition] = new Blank();
+		}
+	}
+	if (iYPosition - 1 >= 0)
+	{
+		bUp = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition - 1]))
+		{
+			delete this->oMap[iXPosition][iYPosition - 1];
+			this->oMap[iXPosition][iYPosition - 1] = new Blank();
+		}
+	}
+	if (iYPosition + 1 < iYrange)
+	{
+		bDown = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition + 1]))
+		{
+			delete this->oMap[iXPosition][iYPosition + 1];
+			this->oMap[iXPosition][iYPosition + 1] = new Blank();
+		}
+	}
+	if (bLeft && bDown)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition + 1]))
+		{
+			delete this->oMap[iXPosition - 1][iYPosition + 1];
+			this->oMap[iXPosition - 1][iYPosition + 1] = new Blank();
+		}
+	}
+	if (bLeft && bUp)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition - 1]))
+		{
+			delete this->oMap[iXPosition - 1][iYPosition - 1];
+			this->oMap[iXPosition - 1][iYPosition - 1] = new Blank();
+		}
+	}
+	if (bRight && bDown)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition + 1]))
+		{
+			delete this->oMap[iXPosition + 1][iYPosition + 1];
+			this->oMap[iXPosition + 1][iYPosition + 1] = new Blank();
+		}
+	}
+	if (bRight && bUp)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition - 1]))
+		{
+			delete this->oMap[iXPosition + 1][iYPosition - 1];
+			this->oMap[iXPosition + 1][iYPosition - 1] = new Blank();
+		}
+	}
+	//second layer
+	bool bLeft2 = false;
+	bool bRight2 = false;
+	bool bUp2 = false;
+	bool bDown2 = false;
+
+	if (iXPosition - 2 >= 0)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition]))
+		{
+			delete this->oMap[iXPosition - 2][iYPosition];
+			this->oMap[iXPosition - 2][iYPosition] = new Blank();
+		}
+		bLeft2 = true;
+	}
+	if (iXPosition + 2 < iXrange)
+	{
+		bRight2 = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition]))
+		{
+			delete this->oMap[iXPosition + 2][iYPosition];
+			this->oMap[iXPosition + 2][iYPosition] = new Blank();
+		}
+	}
+	if (iYPosition - 2 >= 0)
+	{
+		bUp2 = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition - 2]))
+		{
+			delete this->oMap[iXPosition][iYPosition - 2];
+			this->oMap[iXPosition][iYPosition - 2] = new Blank();
+		}
+	}
+	if (iYPosition + 2 < iYrange)
+	{
+		bDown2 = true;
+		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition + 2]))
+		{
+			delete this->oMap[iXPosition][iYPosition + 2];
+			this->oMap[iXPosition][iYPosition + 2] = new Blank();
+		}
+	}
+	if (bLeft2 && bDown2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition + 2]))
+		{
+			delete this->oMap[iXPosition - 2][iYPosition + 2];
+			this->oMap[iXPosition - 2][iYPosition + 2] = new Blank();
+		}
+
+	}
+	if (bLeft2 && bUp2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition - 2]))
+		{
+			delete this->oMap[iXPosition - 2][iYPosition - 2];
+			this->oMap[iXPosition - 2][iYPosition - 2] = new Blank();
+		}
+	}
+	if (bRight2 && bDown2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition + 2]))
+		{
+			delete this->oMap[iXPosition + 2][iYPosition + 2];
+			this->oMap[iXPosition + 2][iYPosition + 2] = new Blank();
+		}
+	}
+	if (bRight2 && bUp2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition - 2]))
+		{
+			delete this->oMap[iXPosition + 2][iYPosition - 2];
+			this->oMap[iXPosition + 2][iYPosition - 2] = new Blank();
+		}
+	}
+	//
+	if (bLeft && bDown2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition + 2]))
+		{
+			delete this->oMap[iXPosition - 1][iYPosition + 2];
+			this->oMap[iXPosition - 1][iYPosition + 2] = new Blank();
+		}
+
+	}
+	if (bLeft && bUp2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition - 2]))
+		{
+			delete this->oMap[iXPosition - 1][iYPosition - 2];
+			this->oMap[iXPosition - 1][iYPosition - 2] = new Blank();
+		}
+	}
+	if (bRight && bDown2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition + 2]))
+		{
+			delete this->oMap[iXPosition + 1][iYPosition + 2];
+			this->oMap[iXPosition + 1][iYPosition + 2] = new Blank();
+		}
+	}
+	if (bRight && bUp2)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition - 2]))
+		{
+			delete this->oMap[iXPosition + 1][iYPosition - 2];
+			this->oMap[iXPosition + 1][iYPosition - 2] = new Blank();
+		}
+	}
+	//
+	if (bLeft2 && bDown)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition + 1]))
+		{
+			delete this->oMap[iXPosition - 2][iYPosition + 1];
+			this->oMap[iXPosition - 2][iYPosition + 1] = new Blank();
+		}
+
+	}
+	if (bLeft2 && bUp)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition - 1]))
+		{
+			delete this->oMap[iXPosition - 2][iYPosition - 1];
+			this->oMap[iXPosition - 2][iYPosition - 1] = new Blank();
+		}
+	}
+	if (bRight2 && bDown)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition + 1]))
+		{
+			delete this->oMap[iXPosition + 2][iYPosition + 1];
+			this->oMap[iXPosition + 2][iYPosition + 1] = new Blank();
+		}
+	}
+	if (bRight2 && bUp)
+	{
+		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition - 1]))
+		{
+			delete this->oMap[iXPosition + 2][iYPosition - 1];
+			this->oMap[iXPosition + 2][iYPosition - 1] = new Blank();
+		}
+	}
+
 	delete this->oMap[iXPosition][iYPosition];
 	this->oMap[iXPosition][iYPosition] = new Blank();
 }

@@ -1,4 +1,7 @@
 #include "Player.h"
+#include "SuperPickaxe.h"
+#include "Dynamite.h"
+
 Player::Player()
 {
 	this->bRight = true;
@@ -62,7 +65,7 @@ void Player::setToolIndex(int iToolIndex)
 	}
 	else if (iToolIndex == 2) //superpickaxe
 	{
-		//this->tCurrentTool = new SuperPickaxe();
+		this->tCurrentTool = new SuperPickaxe();
 	}
 	else if (iToolIndex == 3)//bomb
 	{
@@ -70,7 +73,7 @@ void Player::setToolIndex(int iToolIndex)
 	}
 	else if (iToolIndex == 4)//dynamite
 	{
-		//this->tCurrentTool = new Dynamite();
+		this->tCurrentTool = new Dynamite(5);
 	}
 }
 

@@ -2,6 +2,8 @@
 #define ENGINE_HPP
 #include <SFML/Graphics.hpp>
 #include "Map.h"
+#include "Menu.h"
+#include "ProfilesContainer.h"
 
 class Engine
 {
@@ -9,8 +11,12 @@ public:
 	Engine();
 	~Engine();
 	void startGame();
-private:
+	void startMenu(sf::RenderWindow &window);
 
+private:
+	bool bMenu;
+	bool bGame;
+	ProfilesContainer* profiles;
 };
 
 

@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include "Bomb.h"
+#include "Dynamite.h"
 #include "Event.h"
 #include "Player.h"
 
@@ -27,8 +28,11 @@ public:
 	void useTool();
 	void useCurrentTool(int iXPosition, int iYPosition);
 	void usePickaxe(int iXPosition, int iYPosition);
+	void useSuperPickaxe(int iXPosition, int iYPosition);
 	void useBomb(int iXPosition, int iYPosition);
+	void useDynamite(int iXPosition, int iYPosition);
 	void explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition);
+	void explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition);
 	~Map();
 
 private:

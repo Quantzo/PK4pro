@@ -125,17 +125,20 @@
   <ItemGroup>
     <ClCompile Include="bomb.cpp" />
     <ClCompile Include="Clay.cpp" />
+    <ClCompile Include="Dynamite.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="EventQueue.cpp" />
     <ClCompile Include="Granite.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Pickaxe.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Profile.cpp" />
     <ClCompile Include="ProfilesContainer.cpp" />
     <ClCompile Include="Blank.cpp" />
+    <ClCompile Include="SuperPickaxe.cpp" />
     <ClCompile Include="Tool.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +151,7 @@
     <ClInclude Include="EventQueue.h" />
     <ClInclude Include="Granite.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Pickaxe.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Terrain.h" />

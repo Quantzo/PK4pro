@@ -1,17 +1,29 @@
 #include "Profile.h"
 Profile::Profile()
 {
-	
+	this->iPoints = 0;
+	this->TechTree[0] = true;
+	this->TechTree[1] = false;
+	this->TechTree[2] = false;
+	this->TechTree[3] = false;
 }
 
 void Profile::setName(std::string sName)
 {
 	this->sName = sName;
 }
+std::string Profile::getName()
+{
+	return this->sName;
+}
 
 void Profile::setPoints(int iPoints)
 {
 	this->iPoints = iPoints;
+}
+int Profile::getPoints()
+{
+	return this->iPoints;
 }
 
 void Profile::setTechTree(std::string kilof, std::string superKilof, std::string bomba, std::string dynamit)

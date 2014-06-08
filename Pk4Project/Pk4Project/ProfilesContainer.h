@@ -6,10 +6,14 @@
 class ProfilesContainer
 {
 public:
-	ProfilesContainer(std::string Path);
+	ProfilesContainer();
 	~ProfilesContainer();
 	void Save();
-	void Load();
+	void Load(std::string Path);
+	Profile getProfile(int iNumber);
+	void removeProfile(int iNumber);
+	void addProfile(Profile pProfile);
+	int getSize();
 private:
 	std::string sPath;
 	std::vector<char> XMLcopy;

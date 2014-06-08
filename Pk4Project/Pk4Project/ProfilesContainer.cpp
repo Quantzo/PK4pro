@@ -6,28 +6,26 @@
 
 
 
-ProfilesContainer::ProfilesContainer(std::string Path)
+ProfilesContainer::ProfilesContainer()
+{
+}
+
+
+void ProfilesContainer::Load(std::string Path)
 {
 	std::string input_xml;
 	std::string line;
 	std::ifstream XMLfile(Path);
-	
+
 	this->sPath = Path;
 
 	while (getline(XMLfile, line))
-			input_xml += line;
-	
+		input_xml += line;
+
 	std::vector<char> xml_copy(input_xml.begin(), input_xml.end());
 	xml_copy.push_back('\0');
 	this->XMLcopy = xml_copy;
-
-
-}
-
-
-void ProfilesContainer::Load()
-{
-	int count=4;
+	int count;
 
 	rapidxml::xml_document<> xmlDoc;
 	try
@@ -59,7 +57,27 @@ void ProfilesContainer::Load()
 	
 }
 
+void ProfilesContainer::Save()
+{
+	return;
+}
 
+int ProfilesContainer::getSize()
+{
+	return this->pProfiles.size();
+}
+Profile ProfilesContainer::getProfile(int iNumber)
+{
+	return this->pProfiles[iNumber];
+}
+void ProfilesContainer::removeProfile(int iNumber)
+{
+	this->pProfiles.erase(this->pProfiles.begin()+iNumber);
+}
+void ProfilesContainer::addProfile(Profile pProfile)
+{
+	this->pProfiles.push_back(pProfile);
+}
 
 ProfilesContainer::~ProfilesContainer()
 {

@@ -1,21 +1,21 @@
-#include "Bomb.h"
-Bomb::Bomb(int iDetonateTime)
+#include "Dynamite.h"
+Dynamite::Dynamite(int iDetonateTime)
 {
 	this->iDetonateTime = iDetonateTime;
 }
 
-Bomb::~Bomb()
+Dynamite::~Dynamite()
 {
 }
-void Bomb::draw(int iXpos, int iYpos, sf::RenderWindow &window)
+void Dynamite::draw(int iXpos, int iYpos, sf::RenderWindow &window)
 {
 	sf::CircleShape shape(5.f);
-	shape.setFillColor(sf::Color::Green);
+	shape.setFillColor(sf::Color::Blue);
 	shape.setPosition(10 * iXpos, 10 * iYpos);
 	window.draw(shape);
 }
 
-void Bomb::setUp(EventQueue* qEventQueue, int iXPosition, int iYPosition)
+void Dynamite::setUp(EventQueue* qEventQueue, int iXPosition, int iYPosition)
 {
 	sf::Clock clock;
 	while (true)
@@ -30,7 +30,7 @@ void Bomb::setUp(EventQueue* qEventQueue, int iXPosition, int iYPosition)
 	qEventQueue->addEvent(iXPosition, iYPosition, this);
 	return;
 }
-bool Bomb::use(Object* oUsedOn)
+bool Dynamite::use(Object* oUsedOn)
 {
 	if (dynamic_cast<Blank*>(oUsedOn))
 	{
@@ -38,9 +38,13 @@ bool Bomb::use(Object* oUsedOn)
 	}
 	return false;
 }
-bool Bomb::tryDestroy(Object* oTestedObject)
+bool Dynamite::tryDestroy(Object* oTestedObject)
 {
 	if (dynamic_cast<Clay*>(oTestedObject))
+	{
+		return true;
+	}
+	else if (dynamic_cast<Granite*>(oTestedObject))
 	{
 		return true;
 	}
