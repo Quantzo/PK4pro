@@ -66,9 +66,9 @@ int ProfilesContainer::getSize()
 {
 	return this->pProfiles.size();
 }
-Profile ProfilesContainer::getProfile(int iNumber)
+Profile* ProfilesContainer::getProfile(int iNumber)
 {
-	return this->pProfiles[iNumber];
+	return &(this->pProfiles[iNumber]);
 }
 void ProfilesContainer::removeProfile(int iNumber)
 {

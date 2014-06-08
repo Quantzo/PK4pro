@@ -10,6 +10,7 @@ public:
 	void setPoints(int iPoints);
 	int getPoints();
 	void setTechTree(std::string kilof, std::string superKilof, std::string bomba, std::string dynamit);
+	bool* getTechTree();
 	~Profile();
 
 private:

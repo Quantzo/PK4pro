@@ -16,7 +16,10 @@ public:
 private:
 	bool bMenu;
 	bool bGame;
+	int iBombs;
+	int iDynamites;
 	ProfilesContainer* profiles;
+	Profile* currentProfile;
 };
 
 

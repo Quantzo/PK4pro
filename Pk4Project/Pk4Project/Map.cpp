@@ -1,6 +1,6 @@
 #include "Map.h"
 
-Map::Map()
+Map::Map(int iBomb, int iDynamites,Profile* &currentProfile)
 {
 	this->iXrange = 50;
 	this->iYrange = 50;
@@ -15,6 +15,9 @@ Map::Map()
 	this->pPlayer = new Player();
 	this->oMap[0][0] = this->pPlayer;
 	this->iCurrentDirection = 1;
+	this->CurrentProfile = currentProfile;
+	this->iBomb = iBomb;
+	this->iDynamites = iDynamites;
 	this->qEventQueue = new EventQueue();
 }
 Map::Map(int iXrange, int iYrange)

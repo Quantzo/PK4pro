@@ -10,7 +10,7 @@ public:
 	~ProfilesContainer();
 	void Save();
 	void Load(std::string Path);
-	Profile getProfile(int iNumber);
+	Profile* getProfile(int iNumber);
 	void removeProfile(int iNumber);
 	void addProfile(Profile pProfile);
 	int getSize();

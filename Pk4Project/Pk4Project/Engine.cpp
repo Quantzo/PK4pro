@@ -2,6 +2,7 @@
 
 Engine::Engine()
 {
+	this->currentProfile = NULL;
 	this->bMenu = true;
 	this->bGame = false;
 	this->profiles = new ProfilesContainer();
@@ -18,23 +19,33 @@ void Engine::startGame()
 	{
 		this->startMenu(window);
 	}
-	else if (bGame)
+	if (bGame)
 	{
-		Map Mapa;
-		while (window.isOpen())
+		Map Mapa(this->iBombs, this->iDynamites);
+		Mapa.generateMap();
+		sf::Clock clock;
+		sf::Time time = clock.getElapsedTime();
+		while (window.isOpen() && (int)time.asSeconds() < 120)
 		{
+			time = clock.getElapsedTime();
 			sf::Event event;
+			sf::Text Timer;
+			sf::Font font;
+			font.loadFromFile("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\Cinta Adalah Perhatian.ttf");
+			Timer.setFont(font);
+			Timer.setCharacterSize(15);
+			Timer.setString(std::to_string(120 - (int)time.asSeconds()));
+			Timer.setPosition(470, 0);
+			Timer.setColor(sf::Color::Black);
+			
 			while (window.pollEvent(event))
 			{
 				if (event.type == sf::Event::Closed)
 					window.close();
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-			{
-				window.close();
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
 				Mapa.movePlayer(1);
 			}
@@ -73,6 +84,7 @@ void Engine::startGame()
 			Mapa.handleEvents();
 			window.clear();
 			Mapa.draw(window);
+			window.draw(Timer);
 			window.display();
 		}
 	}
@@ -82,7 +94,7 @@ void Engine::startGame()
 void Engine::startMenu(sf::RenderWindow &window)
 {
 	Menu menu(profiles);
-	while (window.isOpen())
+	while (bMenu)
 	{
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -107,7 +119,7 @@ void Engine::startMenu(sf::RenderWindow &window)
 			}
 			if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Space))
 			{
-				int request = menu.useOption();
+				int request = menu.useOption(this->iBombs, this->iDynamites, this->currentProfile);
 				if (request == 1)//save profiles
 				{
 					this->profiles->Save();
@@ -151,6 +163,12 @@ void Engine::startMenu(sf::RenderWindow &window)
 					Profile tmp;
 					tmp.setName(profileName);
 					this->profiles->addProfile(tmp);
+				}
+				else if (request == 4)
+				{
+					this->bGame = true;
+					this->bMenu = false;
+					return;
 				}
 			}
 		}

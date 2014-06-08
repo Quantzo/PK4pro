@@ -152,6 +152,7 @@
     <ClInclude Include="Granite.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Nagłówek.h" />
     <ClInclude Include="Pickaxe.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Terrain.h" />

@@ -167,6 +167,9 @@
     <ClInclude Include="Menu.h">
       <Filter>Pliki nagłówkowe\Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Nagłówek.h">
+      <Filter>Pliki nagłówkowe\profile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="save.xml">

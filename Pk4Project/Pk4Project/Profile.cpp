@@ -25,10 +25,14 @@ int Profile::getPoints()
 {
 	return this->iPoints;
 }
+bool* Profile::getTechTree()
+{
+	return this->TechTree;
+}
 
 void Profile::setTechTree(std::string kilof, std::string superKilof, std::string bomba, std::string dynamit)
 {
-	if (kilof.compare("true"))
+	if (!(kilof.compare("true")))
 	{
 		this->TechTree[0] = true;
 	}
@@ -36,7 +40,7 @@ void Profile::setTechTree(std::string kilof, std::string superKilof, std::string
 	{
 		this->TechTree[0] = false;
 	}
-	if (superKilof.compare("true"))
+	if (!(superKilof.compare("true")))
 	{
 		this->TechTree[1] = true;
 	}
@@ -44,7 +48,7 @@ void Profile::setTechTree(std::string kilof, std::string superKilof, std::string
 	{
 		this->TechTree[1] = false;
 	}
-	if (bomba.compare("true"))
+	if (!(bomba.compare("true")))
 	{
 		this->TechTree[2] = true;
 	}
@@ -52,7 +56,7 @@ void Profile::setTechTree(std::string kilof, std::string superKilof, std::string
 	{
 		this->TechTree[2] = false;
 	}
-	if (dynamit.compare("true"))
+	if (!(dynamit.compare("true")))
 	{
 		this->TechTree[3] = true;
 	}

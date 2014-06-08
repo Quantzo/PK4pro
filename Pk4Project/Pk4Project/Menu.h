@@ -10,7 +10,7 @@ public:
 	~Menu();
 	void Draw(sf::RenderWindow &window);
 	void selectOption(int iDir);
-	int useOption();
+	int useOption(int &iBombs,int &iDynamites,Profile* &currentProfile);
 	
 	
 private:
@@ -21,6 +21,8 @@ private:
 	int iActualMenu;
 	int iRightMenuSize;
 	int iActualProfile;
+	int iBombs;
+	int iDynamites;
 	ProfilesContainer* profiles;
 	sf::Font Font;
 };

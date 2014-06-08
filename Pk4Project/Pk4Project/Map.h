@@ -11,14 +11,14 @@
 #include "Blank.h"
 #include "Clay.h"
 #include "Granite.h"
-
+#include "Profile.h"
 
 #include <thread>
 
 class Map
 {
 public:
-	Map();
+	Map(int iBomb, int iDynamites,Profile* &currentProfile);
 	Map(int iXrange, int iYrange);
 	void generateMap();
 	void handleEvents();
@@ -42,6 +42,9 @@ private:
 	int iXplayerPosition;
 	int iYplayerPosition;
 	int iCurrentDirection;
+	int iDynamites;
+	int iBomb;
+	Profile* CurrentProfile;
 	Player* pPlayer;
 	EventQueue* qEventQueue;
 
