@@ -16,6 +16,7 @@ public:
 private:
 	bool bMenu;
 	bool bGame;
+	bool brun;
 	int iBombs;
 	int iDynamites;
 	ProfilesContainer* profiles;

@@ -167,7 +167,7 @@
     <ClInclude Include="Menu.h">
       <Filter>Pliki nagłówkowe\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Nagłówek.h">
+    <ClInclude Include="XMLfileException.h">
       <Filter>Pliki nagłówkowe\profile</Filter>
     </ClInclude>
   </ItemGroup>

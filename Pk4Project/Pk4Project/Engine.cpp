@@ -5,8 +5,9 @@ Engine::Engine()
 	this->currentProfile = NULL;
 	this->bMenu = true;
 	this->bGame = false;
+	this->brun = true;
 	this->profiles = new ProfilesContainer();
-	this->profiles->Load("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\save2.txt");
+	this->profiles->Load("save.xml");
 }
 void Engine::startGame()
 {
@@ -15,77 +16,82 @@ void Engine::startGame()
 	srand(time(0));	
 	window.setFramerateLimit(60);
 
-	if (bMenu)
+	while (this->brun)
 	{
-		this->startMenu(window);
-	}
-	if (bGame)
-	{
-		Map Mapa(this->iBombs, this->iDynamites);
-		Mapa.generateMap();
-		sf::Clock clock;
-		sf::Time time = clock.getElapsedTime();
-		while (window.isOpen() && (int)time.asSeconds() < 120)
+		if (bMenu)
 		{
-			time = clock.getElapsedTime();
-			sf::Event event;
-			sf::Text Timer;
-			sf::Font font;
-			font.loadFromFile("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\Cinta Adalah Perhatian.ttf");
-			Timer.setFont(font);
-			Timer.setCharacterSize(15);
-			Timer.setString(std::to_string(120 - (int)time.asSeconds()));
-			Timer.setPosition(470, 0);
-			Timer.setColor(sf::Color::Black);
-			
-			while (window.pollEvent(event))
+			this->startMenu(window);
+		}
+		if (bGame)
+		{
+			Map Mapa(this->iBombs, this->iDynamites, this->currentProfile);
+			Mapa.generateMap();
+			sf::Clock clock;
+			sf::Time time = clock.getElapsedTime();
+			while (window.isOpen() && (int)time.asSeconds() < 30)
 			{
-				if (event.type == sf::Event::Closed)
-					window.close();
-			}
+				time = clock.getElapsedTime();
+				sf::Event event;
+				sf::Text Timer;
+				sf::Font font;
+				font.loadFromFile("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\Cinta Adalah Perhatian.ttf");
+				Timer.setFont(font);
+				Timer.setCharacterSize(15);
+				Timer.setString(std::to_string(120 - (int)time.asSeconds()));
+				Timer.setPosition(470, 0);
+				Timer.setColor(sf::Color::Black);
+
+				while (window.pollEvent(event))
+				{
+					if (event.type == sf::Event::Closed)
+						window.close();
+				}
 
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-			{
-				Mapa.movePlayer(1);
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+				{
+					Mapa.movePlayer(1);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+				{
+					Mapa.movePlayer(2);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+				{
+					Mapa.movePlayer(3);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+				{
+					Mapa.movePlayer(4);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
+				{
+					Mapa.changeTool(1);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
+				{
+					Mapa.changeTool(2);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
+				{
+					Mapa.changeTool(3);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
+				{
+					Mapa.changeTool(4);
+				}
+				else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+				{
+					Mapa.useTool();
+				}
+				Mapa.handleEvents();
+				window.clear();
+				Mapa.draw(window);
+				window.draw(Timer);
+				window.display();
 			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-			{
-				Mapa.movePlayer(2);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			{
-				Mapa.movePlayer(3);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-			{
-				Mapa.movePlayer(4);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-			{
-				Mapa.changeTool(1);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-			{
-				Mapa.changeTool(2);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-			{
-				Mapa.changeTool(3);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num4))
-			{
-				Mapa.changeTool(4);
-			}
-			else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-			{
-				Mapa.useTool();
-			}
-			Mapa.handleEvents();
-			window.clear();
-			Mapa.draw(window);
-			window.draw(Timer);
-			window.display();
+			this->bGame = false;
+			this->bMenu = true;
 		}
 	}
 }
@@ -127,6 +133,8 @@ void Engine::startMenu(sf::RenderWindow &window)
 				else if (request == 2) //exit
 				{
 					window.close();
+					this->brun = false;
+					return;
 				}
 				else if (request == 3)
 				{

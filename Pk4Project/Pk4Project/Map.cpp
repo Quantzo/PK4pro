@@ -38,6 +38,7 @@ Map::Map(int iXrange, int iYrange)
 
 Map::~Map()
 {
+	
 	for (int i = 0; i < this->iXrange; i++)
 	{
 		for (int j = 0; j < this->iYrange; j++)
@@ -67,11 +68,11 @@ void Map::generateMap()
 				int tmp = rand() % 3;
 				if (tmp == 0)
 				{
-					this->oMap[i][j] = new Clay();
+					this->oMap[i][j] = new Granite();
 				}
 				else if (tmp == 1)
 				{
-					this->oMap[i][j] = new Clay();
+					this->oMap[i][j] = new Blank();
 				}
 				else
 				{
@@ -91,6 +92,14 @@ void Map::handleEvents()
 }
 void Map::draw(sf::RenderWindow &window)
 {
+	sf::Text Points;
+	sf::Font font;
+	font.loadFromFile("C:\\Users\\Quantzo\\Source\\Repos\\ProjektPK4\\Pk4Project\\Pk4Project\\Cinta Adalah Perhatian.ttf");
+	Points.setFont(font);
+	Points.setCharacterSize(15);
+	Points.setString(std::to_string(this->CurrentProfile->getPoints()));
+	Points.setPosition(30, 0);
+	Points.setColor(sf::Color::Black);
 	for (int i = 0; i < this->iXrange; i++)
 	{
 		for (int j = 0; j < this->iYrange; j++)
@@ -100,6 +109,8 @@ void Map::draw(sf::RenderWindow &window)
 		}
 
 	}
+	window.draw(Points);
+
 }
 
 void Map::movePlayer(int iDirIndex)
@@ -181,7 +192,32 @@ void Map::movePlayer(int iDirIndex)
 
 void Map::changeTool(int iToolIndex)
 {
-	this->pPlayer->setToolIndex(iToolIndex);
+	if (iToolIndex == 1)
+	{
+		this->pPlayer->setToolIndex(iToolIndex);
+	}
+	else if (iToolIndex == 2)
+	{
+		if (CurrentProfile->getTechTree()[1])
+		{
+			this->pPlayer->setToolIndex(iToolIndex);
+		}
+	}
+	else if (iToolIndex == 3)
+	{
+		if (CurrentProfile->getTechTree()[2])
+		{
+			this->pPlayer->setToolIndex(iToolIndex);
+		}
+	}
+	else if (iToolIndex == 4)
+	{
+		if (CurrentProfile->getTechTree()[3])
+		{
+			this->pPlayer->setToolIndex(iToolIndex);
+		}
+	}
+	
 }
 
 
@@ -211,28 +247,38 @@ void Map::useCurrentTool(int iXPosition, int iYPosition)
 void Map::usePickaxe(int iXPosition, int iYPosition)
 {
 	delete this->oMap[iXPosition][iYPosition];
+	this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 	this->oMap[iXPosition][iYPosition] = new Blank();
 }
 void Map::useSuperPickaxe(int iXPosition, int iYPosition)
 {
 	delete this->oMap[iXPosition][iYPosition];
+	this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 	this->oMap[iXPosition][iYPosition] = new Blank();
 }
 void Map::useBomb(int iXPosition, int iYPosition)
 {
-	delete this->oMap[iXPosition][iYPosition];
-	Bomb* tmp = new Bomb(3);
-	this->oMap[iXPosition][iYPosition] = tmp;
-	std::thread thread(&Bomb::setUp, tmp, this->qEventQueue,iXPosition,iYPosition);
-	thread.detach();
+	if (this->iBomb > 0)
+	{
+		delete this->oMap[iXPosition][iYPosition];
+		Bomb* tmp = new Bomb(3);
+		this->oMap[iXPosition][iYPosition] = tmp;
+		std::thread thread(&Bomb::setUp, tmp, this->qEventQueue, iXPosition, iYPosition);
+		thread.detach();
+		this->iBomb--;
+	}
 }
 void Map::useDynamite(int iXPosition, int iYPosition)
 {
-	delete this->oMap[iXPosition][iYPosition];
-	Dynamite* tmp = new Dynamite(5);
-	this->oMap[iXPosition][iYPosition] = tmp;
-	std::thread thread(&Dynamite::setUp, tmp, this->qEventQueue, iXPosition, iYPosition);
-	thread.detach();
+	if (this->iDynamites > 0)
+	{
+		delete this->oMap[iXPosition][iYPosition];
+		Dynamite* tmp = new Dynamite(5);
+		this->oMap[iXPosition][iYPosition] = tmp;
+		std::thread thread(&Dynamite::setUp, tmp, this->qEventQueue, iXPosition, iYPosition);
+		thread.detach();
+		this->iDynamites--;
+	}
 }
 
 void Map::useTool()
@@ -292,6 +338,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition - 1][iYPosition]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition] = new Blank();
 		}
 		bLeft = true;
@@ -302,6 +349,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition + 1][iYPosition]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition] = new Blank();
 		}
 	}
@@ -311,6 +359,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition - 1] = new Blank();
 		}
 	}
@@ -320,6 +369,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition + 1] = new Blank();
 		}
 	}
@@ -328,6 +378,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition - 1][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition + 1] = new Blank();
 		}
 	}
@@ -336,6 +387,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition - 1][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition - 1] = new Blank();
 		}
 	}
@@ -344,6 +396,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition + 1][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition + 1] = new Blank();
 		}
 	}
@@ -352,6 +405,7 @@ void Map::explodeBomb(Bomb* oBomb, int iXPosition, int iYPosition)
 		if (oBomb->tryDestroy(this->oMap[iXPosition + 1][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition - 1] = new Blank();
 		}
 	}
@@ -371,6 +425,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition] = new Blank();
 		}
 		bLeft = true;
@@ -381,6 +436,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition] = new Blank();
 		}
 	}
@@ -390,6 +446,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition - 1] = new Blank();
 		}
 	}
@@ -399,6 +456,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition + 1] = new Blank();
 		}
 	}
@@ -407,6 +465,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition + 1] = new Blank();
 		}
 	}
@@ -415,6 +474,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition - 1] = new Blank();
 		}
 	}
@@ -423,6 +483,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition + 1] = new Blank();
 		}
 	}
@@ -431,6 +492,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition - 1] = new Blank();
 		}
 	}
@@ -445,6 +507,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition]))
 		{
 			delete this->oMap[iXPosition - 2][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 2][iYPosition] = new Blank();
 		}
 		bLeft2 = true;
@@ -455,6 +518,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition]))
 		{
 			delete this->oMap[iXPosition + 2][iYPosition];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 2][iYPosition] = new Blank();
 		}
 	}
@@ -464,6 +528,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition - 2]))
 		{
 			delete this->oMap[iXPosition][iYPosition - 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition - 2] = new Blank();
 		}
 	}
@@ -473,6 +538,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition][iYPosition + 2]))
 		{
 			delete this->oMap[iXPosition][iYPosition + 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition][iYPosition + 2] = new Blank();
 		}
 	}
@@ -481,6 +547,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition + 2]))
 		{
 			delete this->oMap[iXPosition - 2][iYPosition + 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 2][iYPosition + 2] = new Blank();
 		}
 
@@ -490,6 +557,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition - 2]))
 		{
 			delete this->oMap[iXPosition - 2][iYPosition - 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 2][iYPosition - 2] = new Blank();
 		}
 	}
@@ -498,6 +566,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition + 2]))
 		{
 			delete this->oMap[iXPosition + 2][iYPosition + 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 2][iYPosition + 2] = new Blank();
 		}
 	}
@@ -506,6 +575,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition - 2]))
 		{
 			delete this->oMap[iXPosition + 2][iYPosition - 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 2][iYPosition - 2] = new Blank();
 		}
 	}
@@ -515,6 +585,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition + 2]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition + 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition + 2] = new Blank();
 		}
 
@@ -524,6 +595,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 1][iYPosition - 2]))
 		{
 			delete this->oMap[iXPosition - 1][iYPosition - 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 1][iYPosition - 2] = new Blank();
 		}
 	}
@@ -532,6 +604,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition + 2]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition + 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition + 2] = new Blank();
 		}
 	}
@@ -540,6 +613,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 1][iYPosition - 2]))
 		{
 			delete this->oMap[iXPosition + 1][iYPosition - 2];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 1][iYPosition - 2] = new Blank();
 		}
 	}
@@ -549,6 +623,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition - 2][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 2][iYPosition + 1] = new Blank();
 		}
 
@@ -558,6 +633,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition - 2][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition - 2][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition - 2][iYPosition - 1] = new Blank();
 		}
 	}
@@ -566,6 +642,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition + 1]))
 		{
 			delete this->oMap[iXPosition + 2][iYPosition + 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 2][iYPosition + 1] = new Blank();
 		}
 	}
@@ -574,6 +651,7 @@ void Map::explodeDynamite(Dynamite* oDynamite, int iXPosition, int iYPosition)
 		if (oDynamite->tryDestroy(this->oMap[iXPosition + 2][iYPosition - 1]))
 		{
 			delete this->oMap[iXPosition + 2][iYPosition - 1];
+			this->CurrentProfile->setPoints(this->CurrentProfile->getPoints() + 10);
 			this->oMap[iXPosition + 2][iYPosition - 1] = new Blank();
 		}
 	}
